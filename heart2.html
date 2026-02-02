@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valentine</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: url("dog.jpg") center / cover no-repeat;
+  overflow: hidden;
+}
+
+/* BOTTOM CONTENT AREA */
+.bottom-box {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 14px 10px 22px;
+  text-align: center;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+}
+
+/* QUESTION TEXT */
+h1 {
+  font-size: clamp(20px, 5vw, 34px);
+  color: #e60073;
+  margin: 0 0 12px;
+}
+
+/* BUTTON CONTAINER */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* HEART BUTTON – FIXED */
+.heart {
+  width: 64px;
+  height: 56px;
+  background: pink;
+  position: relative;
+  transform: rotate(-45deg);
+  cursor: pointer;
+}
+
+/* HEART LOBES */
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 56px;
+  background: pink;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -32px;
+  left: 0;
+}
+
+.heart::after {
+  left: 32px;
+  top: 0;
+}
+
+/* TEXT – ALWAYS CLEAR */
+.heart span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+  font-size: 14px;
+  font-weight: 800;
+  color: white;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* FIREWORK */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  to {
+    box-shadow:
+      0 -70px red,
+      50px -50px gold,
+      70px 0 deepskyblue,
+      50px 50px lime,
+      0 70px hotpink,
+      -50px 50px violet,
+      -70px 0 orange,
+      -50px -50px cyan;
+    opacity: 0;
+  }
+}
+
+/* NO SCREEN */
+.blackout {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(22px, 6vw, 36px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="bottom-box">
+  <h1>Noufi, will you be my Valentine?</h1>
+
+  <div class="buttons">
+    <div class="heart" onclick="yesClicked()">
+      <span>YES</span>
+    </div>
+
+    <div class="heart" id="noBtn">
+      <span>NO</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+
+/* MOVE NO BUTTON */
+function moveNo() {
+  const x = Math.random() * (window.innerWidth - 80);
+  const y = Math.random() * (window.innerHeight - 80);
+  noBtn.style.position = "fixed";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+/* YES ACTION */
+function yesClicked() {
+  for (let i = 0; i < 7; i++) {
+    createFirework();
+  }
+}
+
+/* FIREWORK CREATION */
+function createFirework() {
+  const fw = document.createElement("div");
+  fw.className = "firework";
+  fw.style.left = Math.random() * window.innerWidth + "px";
+  fw.style.top = Math.random() * window.innerHeight + "px";
+  document.body.appendChild(fw);
+  setTimeout(() => fw.remove(), 1000);
+}
+
+/* NO FINAL (DOUBLE CLICK) */
+noBtn.addEventListener("dblclick", () => {
+  document.body.innerHTML = `
+    <div class="blackout">
+      It's okay, thank you.
+    </div>
+  `;
+});
+</script>
+
+</body>
+</html>
